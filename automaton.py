@@ -1,3 +1,4 @@
+import collections
 import random
 
 
@@ -12,8 +13,21 @@ class CellularAutmaton1d:
     def random_initialize(self):
         self.array = [random.randint(0, (self.num_states-1)) for i in self.array]
 
+    def get_slice(self, start, end):
+        dq = collections.deque(self.array)
+        dq.rotate(start*-1)
+        return [dq[i] for i in range(end - start)]
+
     def update(self):
-        pass
+        t_array = []
+        for i, v in enumerate(self.array):
+            start_index = i - self.num_neighbors
+            end_index = i + self.num_neighbors + 1
+            slice = self.get_slice(start_index, end_index)
+            sum_neighbors = sum(slice)
+            t_array.append(self.transition[sum_neighbors])
+            # print('Index: {} Val: {} Start: {} End: {} Slice: {} Sum: {} Result: {}'.format(i, v, start_index, end_index, slice, sum_neighbors, t_array[-1]))
+        self.array = t_array
 
     def dump(self):
         if self.num_states <= 10:
