@@ -1,3 +1,5 @@
+import random
+
 
 class CellularAutmaton1d:
 
@@ -8,17 +10,22 @@ class CellularAutmaton1d:
         self.transition = transitions
 
     def random_initialize(self):
-        pass
+        self.array = [random.randint(0, (self.num_states-1)) for i in self.array]
 
     def update(self):
         pass
 
     def dump(self):
-        pass
+        if self.num_states <= 10:
+            print(''.join([str(i) for i in self.array]))
+        else:
+            print(self.array)
 
 
 if __name__ == "__main__":
     a = CellularAutmaton1d(70, 2, 1, [0, 1, 1, 0])
+    a.random_initialize()
+    a.dump()
     for i in range(100):
         a.update()
         a.dump()
